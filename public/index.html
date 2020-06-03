@@ -5,15 +5,47 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="./css/style.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+        <script>
+            const socket = io('http://localhost:3000');
+
+            var infoUsuario = {
+                apelido:    '',
+                id:         '',
+                conectado:  false
+            }
+
+            socket.on('connect', () => {
+                console.log("Conectado ao servidor...");
+            })
+
+            socket.on('infoUsuario', (info) => {
+                console.log("Preenchendo meus dados com recebimento do servidor...");
+                let apelido = info[1];
+                let id = info[0];
+                infoUsuario.apelido         = apelido;
+                infoUsuario.id              = id;
+                infoUsuario.conectado       = true;
+            })
+
+            function enviaApelido() {
+                let apelido = document.getElementById('apelido').value;
+                socket.emit('novoUsuario', apelido);
+            }
+
+        </script>
     </head>
     <body>
 
-        <div class="jumbotron">
-            Hello, world!
+        <div class="container-fluid" id="pseudo-login">
+            <div class="inner-pseudo-login">
+                <label for="apelido">Apelido:</label>
+                <input type="text" id="apelido" class="form-control">
+                <button class="btn btn-dark" onclick="enviaApelido()">ENTRAR</button>
+            </div>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     </body>
 </html>

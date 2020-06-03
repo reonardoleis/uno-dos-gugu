@@ -12,7 +12,8 @@
             var infoUsuario = {
                 apelido:    '',
                 id:         '',
-                conectado:  false
+                conectado:  false,
+                sala:       undefined
             }
 
             socket.on('connect', () => {
@@ -31,7 +32,6 @@
             function enviaApelido() {
                 let apelido = document.getElementById('apelido').value;
                 socket.emit('novoUsuario', apelido);
-                
                 document.getElementById('pseudo-login').style.display = "none";
 
                 document.getElementById('room').style.display = "initial";
@@ -39,7 +39,8 @@
             }
 
             function salaExistente() {
-                
+                //pegaIdSala let salada == 
+                socket.emit('entrarNaSala', sala);
             }
 
             function criarSala() {

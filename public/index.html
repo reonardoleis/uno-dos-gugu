@@ -69,11 +69,11 @@
             })
 
             socket.on('salaDevolvida', sala => {
-                console.log(sala);
+                infoUsuario.infoSala = sala;
             });
 
             socket.on('jogoIniciado', (response) => {
-                console.log(response);
+                infoUsuario.infoSala = response;
             })
 
             function renderSala() {

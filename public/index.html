@@ -89,11 +89,10 @@
 
         </script>
     </head>
-    <body>
-
-        <div style="margin-top: 5%;"></div>
+    <body style="background-image: url('https://cdn.hipwallpaper.com/i/48/64/OR5iNS.jpg');">
         
-        <div class="container-fluid" id="pseudo-login">
+        <div class="container-fluid" id="pseudo-login" style="display: none">
+            <div style="margin-top: 5%;"></div>
                 <label for="apelido">Apelido:</label>
                 <input type="text" id="apelido" class="form-control">
                 <button class="btn btn-dark" onclick="enviaApelido()">ENTRAR</button>
@@ -109,16 +108,38 @@
 
         </div>
 
-        <div class="container-fluid" id="game-room" style="display: none">
+        <div class="container-fluid" id="game-room" style="display: initial;" >
             
-            <h1> Vc está na sala meu casa</h1>
-            
+            <div id="enemy-cards" class="enemy-cards">
+                <div class="cards">
+                    <img class="card" src="/sliced/back.png">
+                    <img class="card" src="/sliced/back.png">
+                    <img class="card" src="/sliced/back.png">
+                    <img class="card" src="/sliced/back.png">
+                    <img class="card" src="/sliced/back.png">
+                    <img class="card" src="/sliced/back.png">
+                    <img class="card" src="/sliced/back.png">
+                </div>
+            </div>
+
+            <div id="central-card" class="central-card">
+                <div class="cards">
+                    <img class="c-card" src="/sliced/1-b.png">
+                </div>
+            </div>
+
+            <div id="your-cards" class="your-cards">
+                <div class="cards">
+                    <img class="card" src="/sliced/2-b.png">
+                    <img class="card" src="/sliced/2-g.png">
+                    <img class="card" src="/sliced/2-r.png">
+                    <img class="card" src="/sliced/2-y.png">
+                </div>
+            </div>
+
         </div>
 
-        
-
-
-
+    
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     </body>

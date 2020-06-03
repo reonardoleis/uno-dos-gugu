@@ -1,3 +1,29 @@
 ﻿.inner-pseudo-login {
-    width: 30vw;
+  width: 30vw;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  max-width: 100px;
+  max-height: 100px;
+  transition: 0.1s ease-in;
+}
+
+.card:hover {
+  max-width: 200px;
+  max-height: 200px;
+}
+
+.enemy-cards {
+    position: fixed;
+    top: 0;
+}
+
+.central-card {
+    margin-top: 10%;
+    margin-bottom: 10%;
 }

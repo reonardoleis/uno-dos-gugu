@@ -73,19 +73,13 @@ function devolveSala(request) {
 
 
 function Sala() {
-  this.id            = md5((Math.floor(Math.random() * (10000000 - 0)) + 0).toString(10));
-  this.jogadores     = [];
-  this.jogador_atual = 0;
-  this.baralho       = [];
-  this.descarte      = [];
+  this.id = md5((Math.floor(Math.random() * (10000000 - 0)) + 0).toString(10));
+  this.jogadores = [];
+  this.baralho = [];
+  this.descarte = [];
   this.iniciar = () => {
+      console.log("Criando baralhgo...")
     this.baralho = criaBaralho();
-    this.jogadores.forEach (jogador => {
-        for (let i = 0; i < 7; i++) {
-            let carta_adicionar = this.baralho.shift();
-            jogador.cartas.push(carta_adicionar);
-        }
-    });
   }
 }
 
@@ -145,7 +139,8 @@ function Carta(tipo, cor, imagem, poder = false) {
 }
 
 function criaBaralho() {
-    let copia_baralho = BARALHO_INICIAL.cartas.slice(0);
+    let copia_baralho = BARALHO_INICIAL;
+    copia_baralho = copia_baralho.cartas;
     for (let i = copia_baralho.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [copia_baralho[i], copia_baralho[j]] = [copia_baralho[j], copia_baralho[i]];

@@ -39,10 +39,12 @@
             }
 
             function salaExistente() {
-                
+                let sala = document.getElementById('idSala').value;
+                socket.emit('logaSala', sala);
             }
 
             function criarSala() {
+                socket.emit('criarSala', 0);
 
             }
 

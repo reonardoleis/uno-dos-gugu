@@ -12,7 +12,8 @@
             var infoUsuario = {
                 apelido:    '',
                 id:         '',
-                conectado:  false
+                conectado:  false,
+                sala: undefined
             }
 
             socket.on('connect', () => {
@@ -34,7 +35,7 @@
                 
                 document.getElementById('pseudo-login').style.display = "none";
 
-                document.getElementById('room').style.display = "initial";
+                document.getElementById('enter-room').style.display = "initial";
 
             }
 
@@ -47,6 +48,31 @@
                 socket.emit('criarSala', 0);
             }
 
+            socket.on('entrarSala', response => {
+
+                if(response.status == true) {
+                    infoUsuario.sala = response.id;
+                    renderSala();
+                } else {
+                    alert("Esta sala não existe meu casinha");
+                }
+
+            })
+
+            socket.on('salaCriada', response => {
+                console.log(response);
+
+                infoUsuario.sala = response.id;
+                renderSala();
+
+            })
+
+            function renderSala() {
+
+                document.getElementById('game-room').style.display = "initial";
+                document.getElementById('enter-room').style.display = "none";
+
+            }
 
 
         </script>
@@ -62,13 +88,19 @@
             </div>
         </div>
 
-        <div class="container-fluid" id="room" style="display: none">
+        <div class="container-fluid" id="enter-room" style="display: none">
 
             <label for="idSala">ID da Sala:</label>
             <input type="text" id="idSala" class="form-control" style="margin-bottom: 5%;">
             <button class="btn btn-dark" onclick="salaExistente()">Sala existente</button>
-            <button class="btn btn-dark" style="margin-left: 10%" onclick="criaSala()">Criar sala</button>
+            <button class="btn btn-dark" style="margin-left: 10%" onclick="criarSala()">Criar sala</button>
 
+        </div>
+
+        <div class="container-fluid" id="game-room" style="display: none">
+            
+            <h1> Vc está na sala meu casa</h1>
+            
         </div>
 
         

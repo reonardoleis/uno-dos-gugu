@@ -32,11 +32,15 @@
  
             function enviaApelido() {
                 let apelido = document.getElementById('apelido').value;
-                socket.emit('novoUsuario', apelido);
+                if (apelido.length > 3) {
+                    socket.emit('novoUsuario', apelido);
                
                 document.getElementById('pseudo-login').style.display = "none";
  
                 document.getElementById('enter-room').style.display = "initial";
+                } else {
+                    alert("Seu apelido precisa ser maior que 3 caracteres.");
+                }
  
             }
  
@@ -77,6 +81,14 @@
                 if(response != false) {
                     infoUsuario.infoSala = response;
                     document.getElementById('start-game').style.display = "none";
+                    document.getElementById('jogadores').style.display = 'initial';
+                    document.getElementById('lista_jogadores').innerHTML = "";
+                    let tempJogadores = "";
+                    response.jogadores.forEach(jogador => {
+                        tempJogadores += `<li> ${jogador.apelido} </li>`;
+                    });
+                    document.getElementById('lista_jogadores').innerHTML = tempJogadores;
+
                     renderizaCartas();
  
  
@@ -94,28 +106,39 @@
                 if(minhaVez()) {
                     if(ehPossivel()) {
                         console.log("Você tem possibilidades para jogar.");
+                        //socket.emit("atualizaClientes", infoUsuario.infoSala);
                     } else {
         
                         while (!ehPossivel()) {
+                            //socket.emit("atualizaClientes", infoUsuario.infoSala);
                             compraCarta();
                             renderizaCartas();
                             console.log("Não pode jogar. Comprando mais...");
-                            socket.emit("atualizaClientes", infoUsuario.infoSala);
+                            
                         }
+                        
+                        socket.emit("atualizaClientes", infoUsuario.infoSala);
 
                     }
                 }
             });
+
+            socket.on("jogoFinalizado", dadosJogador => {
+                console.log(dadosJogador);
+            })
 
             function compraCarta() {
                 infoUsuario.infoSala.jogadores.forEach(jogador => {
                     if (jogador.id == infoUsuario.id) {
                         if (infoUsuario.infoSala.baralho.length > 0) {
                             jogador.cartas.push(infoUsuario.infoSala.baralho.shift());
+                            
                         } else {
                             infoUsuario.infoSala.baralho = recriaBaralho(infoUsuario.infoSala.descarte);
                             jogador.cartas.push(infoUsuario.infoSala.baralho.shift());
+                            
                         }
+                        ///socket.emit("atualizaClientes", infoUsuario.infoSala);
                     }
                 });
             }
@@ -125,6 +148,11 @@
                 for (let i = copia_baralho.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [copia_baralho[i], copia_baralho[j]] = [copia_baralho[j], copia_baralho[i]];
+                }
+                for (let i = 0; i < copia_baralho.length; i++) {
+                    if (copia_baralho[i].imagem == 'p4-n' || copia_baralho[i].imagem == 'rgby') {
+                        copia_baralho[i].cor = 'n';
+                    }
                 }
                 return copia_baralho;
             }
@@ -162,11 +190,14 @@
                     let baralho = meuBaralho();
                     let ultimaJogada = infoUsuario.infoSala.descarte[infoUsuario.infoSala.descarte.length - 1];
                     if (baralho[pos].cor == 'n') {
+                        infoUsuario.infoSala.jogador_atual = -1;
                         TEMP_POSICAO = pos;
                         document.getElementById('escolhe-cor').style.display = 'initial';
                     } else {
                         if (baralho[pos].cor == ultimaJogada.cor || baralho[pos].tipo == ultimaJogada.tipo) {
+                            infoUsuario.infoSala.jogador_atual = -1;
                             socket.emit('jogarCarta', {sala: infoUsuario.sala, jogador: infoUsuario.id, carta: pos})
+                            //
                         } else {
                             alert("Você não pode jogar essa carta, meu casa!");
                         }
@@ -179,6 +210,7 @@
             function escolheCor(cor) {
                 document.getElementById('escolhe-cor').style.display = 'none';
                 socket.emit('jogarCarta', {sala: infoUsuario.sala, jogador: infoUsuario.id, carta: TEMP_POSICAO, cor: cor})
+                //socket.emit("atualizaClientes", infoUsuario.infoSala);
             }
 
             function minhaVez() {
@@ -241,6 +273,12 @@
         </script>
     </head>
     <body style="background-image: url('https://cdn.hipwallpaper.com/i/48/64/OR5iNS.jpg');">
+        <div class="container-fluid jogadores" id="jogadores">
+            <h2 align="center">JOGADORES:</h2>
+            <ul id="lista_jogadores">
+
+            </ul>
+        </div>
         <div class="container-fluid escolhe-cor" id="escolhe-cor" style="">
             <h2 align=center>ESCOLHA A NOVA COR:</h2>
             <br>

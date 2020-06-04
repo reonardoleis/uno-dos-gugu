@@ -26,6 +26,18 @@
   display: none;
 }
 
+.jogadores {
+  position: absolute;
+  right: 0;
+  background: white;
+  border: 1px solid black;
+  max-width: fit-content;
+  max-height: fit-content;
+  opacity: 0.8;
+  display: none;
+  z-index: 99;
+}
+
 .c-card {
   max-width: 90px;
   max-height: 90px;

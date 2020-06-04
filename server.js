@@ -94,7 +94,9 @@ io.on("connection", function (client) {
   client.on("atualizaClientes", (sala) => {
       for (let i = 0; i < salas.length; i++) {
         if (sala.id == salas[i].id) {
-            salas[i] = sala;
+            salas[i].jogadores = sala.jogadores;
+            salas[i].baralho = sala.baralho;
+            salas[i].descarte = sala.descarte;
             salas[i].jogadores.forEach(jogador => {
               io.to(jogador.id).emit("atualizaJogo", salas[i]);
             })
@@ -105,9 +107,10 @@ io.on("connection", function (client) {
 
       for (let i = 0; i < salas.length; i++) {
         if (informacoes.sala == salas[i].id) {
-          console.log(salas[i])
+          console.log("Achei a sala!");
+          console.log(salas[i].jogar);
           if (typeof informacoes.cor != 'undefined'){
-            console.log("Recebi com mudança de cor.");
+            
             salas[i].jogar(informacoes.jogador, informacoes.carta, informacoes.cor);
           } else {
             salas[i].jogar(informacoes.jogador, informacoes.carta);
@@ -184,7 +187,14 @@ function Sala() {
     console.log("Entrei para realizar a jogada. Temos " + this.jogadores.length + "jogadores.");
     this.jogadores.forEach(jogador_verif => {
       if (jogador_verif.id == jogador) {
+        let debug = '';
+        jogador_verif.cartas.forEach(k => {
+          debug += k.cor + ', ';
+        });
+        console.log("Cartas: [" + debug + "]");
         carta_jogada = jogador_verif.cartas.splice(carta, 1)[0];
+        console.log("O jogador jogou a carta de número " + carta + "de sua mão.");
+        console.log(carta_jogada);
         //console.log(carta_jogada);
         this.descarte.push(carta_jogada);
         if(carta_jogada.cor == 'n') {
@@ -204,12 +214,21 @@ function Sala() {
             }
             if(carta_jogada.block == true) {
               this.jogador_atual++;
+              if (this.jogador_atual > this.numero_jogadores - 1) {
+                console.log("Passou do jogador. Voltando ao 0");
+                this.jogador_atual = 0;
+              }
             }
             if(carta_jogada.reverse == true) {
               this.jogadores.reverse();
             }
+            if (jogador_verif.cartas.length == 0) {
+              io.to(jogador_verif.id).emit("jogoFinalizado", jogador_verif);
+            }
         }
         console.log("Jogada feita.");
+
+
         this.jogador_atual++;
         if (this.jogador_atual > this.numero_jogadores - 1) {
           console.log("Passou do jogador. Voltando ao 0");
@@ -226,6 +245,11 @@ function recriaBaralho(baralho) {
       const j = Math.floor(Math.random() * (i + 1));
       [copia_baralho[i], copia_baralho[j]] = [copia_baralho[j], copia_baralho[i]];
   }
+  for (let i = 0; i < copia_baralho.length; i++) {
+    if (copia_baralho[i].imagem == 'p4-n' || copia_baralho[i].imagem == 'rgby') {
+        copia_baralho[i].cor = 'n';
+    }
+}
   return copia_baralho;
 }
  

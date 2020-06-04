@@ -1,4 +1,10 @@
-﻿.inner-pseudo-login {
+﻿body {
+  background: url('../assets/bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.inner-pseudo-login {
   width: 30vw;
 }
 
@@ -8,8 +14,8 @@
 }
 
 .card {
-  max-width: 90px;
-  max-height: 90px;
+  max-width: 5vw;
+  max-height: 15vh;
   transition: 0.1s ease-in;
 }
 
@@ -39,13 +45,13 @@
 }
 
 .c-card {
-  max-width: 90px;
-  max-height: 90px;
+  max-width: 15vw;
+  max-height: 25vh;
 }
 
 .card:hover {
-  max-width: 110px;
-  max-height: 110px;
+  max-width: 10vw;
+  max-height: 20vh;
 }
 
 .enemy-cards {

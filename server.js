@@ -219,9 +219,7 @@ function Sala() {
                 this.jogador_atual = 0;
               }
             }
-            if(carta_jogada.reverse == true) {
-              this.jogadores.reverse();
-            }
+            
             if (jogador_verif.cartas.length == 0) {
               io.to(jogador_verif.id).emit("jogoFinalizado", jogador_verif);
             }
@@ -236,6 +234,9 @@ function Sala() {
         }
       }
     })
+    if(carta_jogada.reverse == true) {
+      this.jogadores.reverse();
+    }
   }
 }
 

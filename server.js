@@ -3,7 +3,7 @@ const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const md5 = require("md5");
-const PORT = 3000;
+
  
 var salas = [];
  
@@ -321,6 +321,9 @@ function criaBaralho() {
   }
   return copia_baralho;
 }
+
+
+const PORT = process.env.PORT || 3000;
  
 //iniciar server
 http.listen(PORT, () => {

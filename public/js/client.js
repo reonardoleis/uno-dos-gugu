@@ -1,5 +1,8 @@
-﻿const socket = io('http://localhost:3000');
- 
+﻿var PORTA = 0;
+var socket;
+
+socket = io();
+
             var infoUsuario = {
                 apelido:    '',
                 id:         '',

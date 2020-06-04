@@ -328,4 +328,5 @@ const PORT = process.env.PORT || 3000;
 //iniciar server
 http.listen(PORT, () => {
   console.log(`Servidor iniciado na porta ${PORT}`);
+  require('fs').writeFileSync('./public/porta.txt', PORT + '', 'utf8');
 });

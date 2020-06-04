@@ -97,6 +97,9 @@ socket = io();
             socket.on('atualizaJogo', (sala) => {
                 console.log("Atualizando...")
                 infoUsuario.infoSala = sala;
+
+                //aqui atualiza a COR ATUAL
+
                 renderizaCartas();
                 if(minhaVez()) {
                     if(ehPossivel()) {
